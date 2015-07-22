@@ -3,15 +3,34 @@
 // Cleaner setting of bits
 #define BV(x) (1<<x)
 
-namespace Attinyp {
+namespace Attiny26 {
 
 /// Possible prescaler values for timer 0.
 enum Timer0PrescalerValue {
-  PSV_1,
-  PSV_8,
-  PSV_64,
-  PSV_256,
-  PSV_1024,
+  T0_PSV_1,
+  T0_PSV_8,
+  T0_PSV_64,
+  T0_PSV_256,
+  T0_PSV_1024
+};
+
+/// Possible prescaler values for timer 1.
+enum Timer1PrescalerValue {
+  T1_PSV_1,
+  T1_PSV_2,
+  T1_PSV_4,
+  T1_PSV_8,
+  T1_PSV_16,
+  T1_PSV_32,
+  T1_PSV_64,
+  T1_PSV_128,
+  T1_PSV_256,
+  T1_PSV_512,
+  T1_PSV_1024,
+  T1_PSV_2048,
+  T1_PSV_4096,
+  T1_PSV_8192,
+  T1_PSV_16384
 };
 
 /// Sets timer 0 prescaler to requested value.
@@ -22,6 +41,14 @@ enum Timer0PrescalerValue {
 ///   Requested prescaler value
 void setTimer0Prescaler(Timer0PrescalerValue value);
 
+/// Sets timer 1 prescaler to requested value.
+///
+/// This function assumes that Clock Select bits have not been touched yet.
+///
+/// \param value
+///   Requested prescaler value
+void setTimer1Prescaler(Timer1PrescalerValue value);
+
 // Possible voltage references
 enum VoltageReference {
   // Aref pin
@@ -31,6 +58,7 @@ enum VoltageReference {
   // Internal 1.1 V with external capacitor
   VREF_INTERNAL_1_1V
 };
+
 
 // Sets analog voltage reference to requested type.
 //

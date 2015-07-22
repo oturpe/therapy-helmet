@@ -27,25 +27,19 @@
 /// enablePwm(unit8_t) function. This function leaves the pwm pin value low,
 /// so if pwm is disabled with disablePwm() function, pin goes low.
 void initializePwm() {
-  /* TODO: enable for attiny26
-  // Set PD6 as output
-  DDRD |= BV(DDD6);
+  // Set PB1 as output
+  DDRB |= BV(DDB1);
+  // Enable noninverted pwm output
+  TCCR1A |= BV(COM1A1);
+  OCR1C= 0xff;
 
-  // Non-inverting mode
-  TCCR0A |= BV(COM0A1);
-  // Phase correct pwm mode
-  TCCR0A |= BV(WGM00);
-
-  Atmega328p::setTimer0Prescaler(PWM_PRESCALER);
-  */
+  Attiny26::setTimer1Prescaler(PWM_PRESCALER);
 }
 
 /// Enables pwm output retaining the duty cycle that was in effect when it was
 /// last disabled.
 void enablePwm() {
-  /* TODO: Enable for attiny26
-  TCCR0A |= BV(COM0A1);
-  */
+  TCCR1A |= BV(PWM1A);
 }
 
 /// Enables pwm output using given duty cycle.
@@ -53,10 +47,8 @@ void enablePwm() {
 /// \param value
 ///    Requested duty cycle value
 void enablePwm(uint8_t value) {
-  /* TODO: Enable for attiny26
-  OCR0A = value;
-  enablePwm();
-  */
+  TCCR1A |= BV(PWM1A);
+  OCR1A = value;
 }
 
 /// Disables pwm output. It can be enabled again with either enablePwm() or
@@ -106,7 +98,7 @@ int16_t limit(int16_t value, int16_t min, int16_t max) {
 
 int main() {
   // Wait for powr supply capacitors to charge etc.
-  _delay_ms(1000);
+  //_delay_ms(1000);
 
   initializePwm();
   initializeAdc();
@@ -117,11 +109,10 @@ int main() {
     */
   #endif
 
-  DDRB |= BV(DDB0);
+  uint8_t counter = 0x80;
   while(true) {
-    _delay_ms(1000);
-    PORTB |= BV(PORTB0);
-    _delay_ms(1000);
-    PORTB &= ~BV(PORTB0);
+    _delay_ms(100);
+    enablePwm(counter);
+    counter += 4;
     }
 }
