@@ -1,0 +1,5 @@
+mcu=t26
+programmer=arduinoisp
+
+sudo avrdude -c ${programmer} -p ${mcu} -U lfuse:w:0xe4:m -U hfuse:w:0xf6:m
+
